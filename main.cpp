@@ -1,3 +1,14 @@
+//i suppose it can't decode russian. 
+//in main primary function used is numtests. i used this in order to perform several tests with specifications given.
+//it also creates a .txt file that contains information about all runs performed. 
+//here are lots of comments. Some of them are different fitness functions for different functions to optimize, some are for 
+//creation of txt file with extensive information about actions performed in algorithm. i used it for testing. a bit more convenient than debugging.
+//the problems are:
+//1) May be there is something better than pseudo random rand()?
+//2) For some reason the algorithm can't find coordinates (0,0), although it easily finds any others like (3,2). It gets really close to zero coordinates like 1.8 * 10 ^ -60, but still.
+//3) I suppose it has some redundant parts, although I still don't know how do they affect performance and do they at all.
+//4) There are quite a number of variables for tuning up this algorithm.
+
 #include <iostream>
 #include <stdio.h>      /* printf, scanf, puts, NULL */
 #include <stdlib.h>     /* srand, rand */
@@ -8,7 +19,7 @@
 #include <math.h>
 using namespace std;
 
-const int varnum = 2;//длина массивов - количество переменных
+const int varnum = 2;//Г¤Г«ГЁГ­Г  Г¬Г Г±Г±ГЁГўГ®Гў - ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»Гµ
 const int scoutbeecount = 300;
 const int selectedbeecount = 10;
 const int bestbeecount = 30;
@@ -43,15 +54,15 @@ class doublebee
 //                return fMin + f * (fMax - fMin);
                 position[i] = minval[i] + ((double)rand() / (RAND_MAX + 1.0)) * (maxval[i] - minval[i]);
 //                position[i] = (double)(rand() % (int)((maxval[i] - minval[i]) * 1000.0 + 1.0)) / 1000.0 + minval[i];
-//                fitness -= position[i] * position[i];//минимальный объем гиперсферы
+//                fitness -= position[i] * position[i];//Г¬ГЁГ­ГЁГ¬Г Г«ГјГ­Г»Г© Г®ГЎГєГҐГ¬ ГЈГЁГЇГҐГ°Г±ГґГҐГ°Г»
                 i++;
             }
-//            fitness = - (pow(1.0 - position[0], 2.0) + 100 * pow(position[1] - pow(position[0], 2.0),2.0));//розенброк 2 переменные
+//            fitness = - (pow(1.0 - position[0], 2.0) + 100 * pow(position[1] - pow(position[0], 2.0),2.0));//Г°Г®Г§ГҐГ­ГЎГ°Г®ГЄ 2 ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
 //            fitness = (1 / (1 + pow(position[0] - 2.0,2.0) + pow(position[1] - 10.0, 2.0))) +
 //            (1 / (2 + pow(position[0] - 10.0,2.0) + pow(position[1] - 15.0, 2.0))) +
-//            (1 / (1 + pow(position[0] - 18.0,2.0) + pow(position[1] - 4.0, 2.0)));//шекель
-//            fitness = - (pow(pow(position[0], 2.0) + position[1] - 11, 2.0) + pow(position[0] + pow(position[1], 2.0) - 7.0, 2.0));//Химмельблау
-            fitness = - (20.0 + pow(position[0], 2.0) + pow(position[1], 2.0) - 10 * (cos(2.0 * M_PI * position[0]) + cos(2.0 * M_PI * position[1])));//Растригин
+//            (1 / (1 + pow(position[0] - 18.0,2.0) + pow(position[1] - 4.0, 2.0)));//ГёГҐГЄГҐГ«Гј
+//            fitness = - (pow(pow(position[0], 2.0) + position[1] - 11, 2.0) + pow(position[0] + pow(position[1], 2.0) - 7.0, 2.0));//Г•ГЁГ¬Г¬ГҐГ«ГјГЎГ«Г Гі
+            fitness = - (20.0 + pow(position[0], 2.0) + pow(position[1], 2.0) - 10 * (cos(2.0 * M_PI * position[0]) + cos(2.0 * M_PI * position[1])));//ГђГ Г±ГІГ°ГЁГЈГЁГ­
 
         }
 
@@ -76,7 +87,7 @@ class doublebee
 //            (1 / (2 + pow(position[0] - 10.0,2.0) + pow(position[1] - 15.0, 2.0))) +
 //            (1 / (1 + pow(position[0] - 18.0,2.0) + pow(position[1] - 4.0, 2.0)));
 //            fitness = - (pow(pow(position[0],2.0) + position[1] - 11, 2.0) + pow(position[0] + pow(position[1], 2.0) - 7.0, 2.0));
-            fitness = - (20.0 + pow(position[0], 2.0) + pow(position[1], 2.0) - 10 * (cos(2.0 * M_PI * position[0]) + cos(2.0 * M_PI * position[1])));//Растригин
+            fitness = - (20.0 + pow(position[0], 2.0) + pow(position[1], 2.0) - 10 * (cos(2.0 * M_PI * position[0]) + cos(2.0 * M_PI * position[1])));//ГђГ Г±ГІГ°ГЁГЈГЁГ­
         }
 };
 
@@ -121,19 +132,19 @@ class hive
         membee membees[bestsitescount + selsitescount];
         hive()
         {
-//            GetLocalTime(&st);//Запись в файл
-//            fout << "Создание улья. Время: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl << endl;
+//            GetLocalTime(&st);//Г‡Г ГЇГЁГ±Гј Гў ГґГ Г©Г«
+//            fout << "Г‘Г®Г§Г¤Г Г­ГЁГҐ ГіГ«ГјГї. Г‚Г°ГҐГ¬Гї: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl << endl;
 
-            for (int i = 0; i < beecount; i++)//создание улья
+            for (int i = 0; i < beecount; i++)//Г±Г®Г§Г¤Г Г­ГЁГҐ ГіГ«ГјГї
             {
                 swarm[i] = doublebee();
-//                GetLocalTime(&st);//Запись в файл
-//                fout << "Создание пчелы №" << i << " Время: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//                GetLocalTime(&st);//Г‡Г ГЇГЁГ±Гј Гў ГґГ Г©Г«
+//                fout << "Г‘Г®Г§Г¤Г Г­ГЁГҐ ГЇГ·ГҐГ«Г» В№" << i << " Г‚Г°ГҐГ¬Гї: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
 //                for (int j = 0; j < varnum; j++)
 //                {
-//                    fout << "Переменная №" << j << "[" << swarm[i].minval[j] << "; " << swarm[i].maxval[j] << "]" << "Координата: " << swarm[i].position[j] << endl;
+//                    fout << "ГЏГҐГ°ГҐГ¬ГҐГ­Г­Г Гї В№" << j << "[" << swarm[i].minval[j] << "; " << swarm[i].maxval[j] << "]" << "ГЉГ®Г®Г°Г¤ГЁГ­Г ГІГ : " << swarm[i].position[j] << endl;
 //                }
-//                fout << "Значение фитнесс функции: " << swarm[i].fitness << endl;
+//                fout << "Г‡Г­Г Г·ГҐГ­ГЁГҐ ГґГЁГІГ­ГҐГ±Г± ГґГіГ­ГЄГ¶ГЁГЁ: " << swarm[i].fitness << endl;
             }
             for (int i = 0; i < bestsitescount + selsitescount; i++)
             {
@@ -144,7 +155,7 @@ class hive
         void sortswarm()
         {
 //            GetLocalTime(&st);
-//            fout << "Сортировка улья началась: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//            fout << "Г‘Г®Г°ГІГЁГ°Г®ГўГЄГ  ГіГ«ГјГї Г­Г Г·Г Г«Г Г±Гј: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
             for (int i = 0; i < bestsitescount + selsitescount; i++)
             {
                 membee bestbee = membees[i];
@@ -188,24 +199,24 @@ class hive
                     }
 
 //                    GetLocalTime(&st);
-//                    fout << "Вставка в стек пчел памяти началась: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//                    fout << "Г‚Г±ГІГ ГўГЄГ  Гў Г±ГІГҐГЄ ГЇГ·ГҐГ« ГЇГ Г¬ГїГІГЁ Г­Г Г·Г Г«Г Г±Гј: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
                     for(int j = bestsitescount + selsitescount - 1; j > i + 1; j--)
                     {
                         membees[j] = membees[j - 1];
 //                        GetLocalTime(&st);
-//                        fout << "Замена " << j << " номера стека предыдущим. " << "Фитнесс функция: " << membees[j].fitness << ". Координаты: х = " << membees[j].position[0] << "; y = " << membees[j].position[1] << "  min: x = " << membees[j].minval[0]
+//                        fout << "Г‡Г Г¬ГҐГ­Г  " << j << " Г­Г®Г¬ГҐГ°Г  Г±ГІГҐГЄГ  ГЇГ°ГҐГ¤Г»Г¤ГіГ№ГЁГ¬. " << "Г”ГЁГІГ­ГҐГ±Г± ГґГіГ­ГЄГ¶ГЁГї: " << membees[j].fitness << ". ГЉГ®Г®Г°Г¤ГЁГ­Г ГІГ»: Гµ = " << membees[j].position[0] << "; y = " << membees[j].position[1] << "  min: x = " << membees[j].minval[0]
 //                        << "; y = " << membees[j].minval[1] << "  max: x = " << membees[j].maxval[0] << "; y = " << membees[j].maxval[1]
-//                        << " Время: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//                        << " Г‚Г°ГҐГ¬Гї: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
                     }
                     membees[i + 1] = reserve;
 //                    GetLocalTime(&st);
-//                    fout << "Замена " << i + 1 << " номера стека смещенной пчелой. "
-//                    << " Время: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//                    fout << "Г‡Г Г¬ГҐГ­Г  " << i + 1 << " Г­Г®Г¬ГҐГ°Г  Г±ГІГҐГЄГ  Г±Г¬ГҐГ№ГҐГ­Г­Г®Г© ГЇГ·ГҐГ«Г®Г©. "
+//                    << " Г‚Г°ГҐГ¬Гї: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
                 }
 //                GetLocalTime(&st);
-//                fout << "Пчела №" << i << " имеет значение фитнесс функции: " << swarm[i].fitness << ". Координаты: х = " << swarm[i].position[0] << "; y = " << swarm[i].position[1] << "  min: x = " << swarm[i].minval[0]
+//                fout << "ГЏГ·ГҐГ«Г  В№" << i << " ГЁГ¬ГҐГҐГІ Г§Г­Г Г·ГҐГ­ГЁГҐ ГґГЁГІГ­ГҐГ±Г± ГґГіГ­ГЄГ¶ГЁГЁ: " << swarm[i].fitness << ". ГЉГ®Г®Г°Г¤ГЁГ­Г ГІГ»: Гµ = " << swarm[i].position[0] << "; y = " << swarm[i].position[1] << "  min: x = " << swarm[i].minval[0]
 //                << "; y = " << swarm[i].minval[1] << "  max: x = " << swarm[i].maxval[0] << "; y = " << swarm[i].maxval[1]
-//                << " Время: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//                << " Г‚Г°ГҐГ¬Гї: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
             }
         }//
 
@@ -233,22 +244,22 @@ class hive
             }
         }
 
-        void beesatwork()//добавить записи в файл!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        void beesatwork()//Г¤Г®ГЎГ ГўГЁГІГј Г§Г ГЇГЁГ±ГЁ Гў ГґГ Г©Г«!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         {
 //            GetLocalTime(&st);
-//            fout << "Началась основная работа алгоритма. " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
-            for(int i = 0; i < bestsitescount + selsitescount; i++)//цикл поиска для отрядов
+//            fout << "ГЌГ Г·Г Г«Г Г±Гј Г®Г±Г­Г®ГўГ­Г Гї Г°Г ГЎГ®ГІГ  Г Г«ГЈГ®Г°ГЁГІГ¬Г . " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+            for(int i = 0; i < bestsitescount + selsitescount; i++)//Г¶ГЁГЄГ« ГЇГ®ГЁГ±ГЄГ  Г¤Г«Гї Г®ГІГ°ГїГ¤Г®Гў
             {
                 membee bestsbee = membees[i];
                 doublebee bestsitebee = swarm[i];
-                if(i < bestsitescount)//отряды лучших точек
+                if(i < bestsitescount)//Г®ГІГ°ГїГ¤Г» Г«ГіГ·ГёГЁГµ ГІГ®Г·ГҐГЄ
                 {
                     bool ind = false;
                     for(int j = scoutbeecount + i * bestbeecount; j < scoutbeecount + (i + 1) * bestbeecount; j++)
                     {
                         swarm[j].flyto(membees[i].position, membees[i].range);
 //                        GetLocalTime(&st);
-//                        fout << "Перемещение пчелы " << j << ". " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//                        fout << "ГЏГҐГ°ГҐГ¬ГҐГ№ГҐГ­ГЁГҐ ГЇГ·ГҐГ«Г» " << j << ". " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
                         if(swarm[j].fitness > bestsbee.fitness && swarm[j].fitness > bestsitebee.fitness)
                         {
                             bestsitebee = swarm[j];
@@ -258,10 +269,10 @@ class hive
                     if (ind)
                     {
 //                        GetLocalTime(&st);
-//                        fout << "Изменение пчелы памяти " << i << endl << "Фитнес функция была:  " << membees[i].fitness << ". Координаты: х = " << membees[i].position[0] << "; y = " << membees[i].position[1] << "  min: x = " << membees[i].minval[0]
-//                        << "; y = " << membees[i].minval[1] << "  max: x = " << membees[i].maxval[0] << "; y = " << membees[i].maxval[1] << endl << "Фитнес функция стала: " << bestsitebee.fitness << ". Координаты: х = " << bestsitebee.position[0] << "; y = " << bestsitebee.position[1] << "  min: x = " << bestsitebee.minval[0]
+//                        fout << "Г€Г§Г¬ГҐГ­ГҐГ­ГЁГҐ ГЇГ·ГҐГ«Г» ГЇГ Г¬ГїГІГЁ " << i << endl << "Г”ГЁГІГ­ГҐГ± ГґГіГ­ГЄГ¶ГЁГї ГЎГ»Г«Г :  " << membees[i].fitness << ". ГЉГ®Г®Г°Г¤ГЁГ­Г ГІГ»: Гµ = " << membees[i].position[0] << "; y = " << membees[i].position[1] << "  min: x = " << membees[i].minval[0]
+//                        << "; y = " << membees[i].minval[1] << "  max: x = " << membees[i].maxval[0] << "; y = " << membees[i].maxval[1] << endl << "Г”ГЁГІГ­ГҐГ± ГґГіГ­ГЄГ¶ГЁГї Г±ГІГ Г«Г : " << bestsitebee.fitness << ". ГЉГ®Г®Г°Г¤ГЁГ­Г ГІГ»: Гµ = " << bestsitebee.position[0] << "; y = " << bestsitebee.position[1] << "  min: x = " << bestsitebee.minval[0]
 //                        << "; y = " << bestsitebee.minval[1] << "  max: x = " << bestsitebee.maxval[0] << "; y = " << bestsitebee.maxval[1]
-//                        << ". Время: "  << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//                        << ". Г‚Г°ГҐГ¬Гї: "  << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
                         membees[i] = membee(bestsitebee, membees[i].funccounter + 1);
                     }
                     else
@@ -277,14 +288,14 @@ class hive
                         }
                     }
                 }
-                else//отряды отобранных точек
+                else//Г®ГІГ°ГїГ¤Г» Г®ГІГ®ГЎГ°Г Г­Г­Г»Гµ ГІГ®Г·ГҐГЄ
                 {
                     bool ind = false;
                     for(int j = scoutbeecount + bestsitescount * bestbeecount + (i - bestsitescount) * selectedbeecount; j < scoutbeecount + bestsitescount * bestbeecount + (i - bestsitescount + 1) * selectedbeecount; j++)
                     {
                         swarm[j].flyto(membees[i].position, membees[i].range);
 //                        GetLocalTime(&st);
-//                        fout << "Перемещение пчелы " << j << ". " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//                        fout << "ГЏГҐГ°ГҐГ¬ГҐГ№ГҐГ­ГЁГҐ ГЇГ·ГҐГ«Г» " << j << ". " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
                         if(swarm[j].fitness > bestsbee.fitness && swarm[j].fitness > bestsitebee.fitness)
                         {
                             bestsitebee = swarm[j];
@@ -294,10 +305,10 @@ class hive
                     if (ind)
                     {
 //                        GetLocalTime(&st);
-//                        fout << "Изменение пчелы памяти " << i << endl << "Фитнес функция была:  " << membees[i].fitness << ". Координаты: х = " << membees[i].position[0] << "; y = " << membees[i].position[1] << "  min: x = " << membees[i].minval[0]
-//                        << "; y = " << membees[i].minval[1] << "  max: x = " << membees[i].maxval[0] << "; y = " << membees[i].maxval[1] << endl << "Фитнес функция стала: " << bestsitebee.fitness << ". Координаты: х = " << bestsitebee.position[0] << "; y = " << bestsitebee.position[1] << "  min: x = " << bestsitebee.minval[0]
+//                        fout << "Г€Г§Г¬ГҐГ­ГҐГ­ГЁГҐ ГЇГ·ГҐГ«Г» ГЇГ Г¬ГїГІГЁ " << i << endl << "Г”ГЁГІГ­ГҐГ± ГґГіГ­ГЄГ¶ГЁГї ГЎГ»Г«Г :  " << membees[i].fitness << ". ГЉГ®Г®Г°Г¤ГЁГ­Г ГІГ»: Гµ = " << membees[i].position[0] << "; y = " << membees[i].position[1] << "  min: x = " << membees[i].minval[0]
+//                        << "; y = " << membees[i].minval[1] << "  max: x = " << membees[i].maxval[0] << "; y = " << membees[i].maxval[1] << endl << "Г”ГЁГІГ­ГҐГ± ГґГіГ­ГЄГ¶ГЁГї Г±ГІГ Г«Г : " << bestsitebee.fitness << ". ГЉГ®Г®Г°Г¤ГЁГ­Г ГІГ»: Гµ = " << bestsitebee.position[0] << "; y = " << bestsitebee.position[1] << "  min: x = " << bestsitebee.minval[0]
 //                        << "; y = " << bestsitebee.minval[1] << "  max: x = " << bestsitebee.maxval[0] << "; y = " << bestsitebee.maxval[1]
-//                        << ". Время: "  << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//                        << ". Г‚Г°ГҐГ¬Гї: "  << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
                         membees[i] = membee(bestsitebee, membees[i].funccounter + 1);
                     }
                     else
@@ -315,7 +326,7 @@ class hive
                 }
             }
 
-            double center[varnum];//переменные для разведчиков
+            double center[varnum];//ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ Г¤Г«Гї Г°Г Г§ГўГҐГ¤Г·ГЁГЄГ®Гў
             double range[varnum];
             for(int i = 0; i < varnum; i++)
             {
@@ -324,15 +335,15 @@ class hive
             }
 
 //            GetLocalTime(&st);
-//            fout << "Началась разведка. " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//            fout << "ГЌГ Г·Г Г«Г Г±Гј Г°Г Г§ГўГҐГ¤ГЄГ . " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
             for(int i = 0; i < scoutbeecount; i++)
             {
                 swarm[i].flyto(center, range);
 //                GetLocalTime(&st);
-//                fout << "Перемещение пчелы-разведчика " << i << ". Время: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//                fout << "ГЏГҐГ°ГҐГ¬ГҐГ№ГҐГ­ГЁГҐ ГЇГ·ГҐГ«Г»-Г°Г Г§ГўГҐГ¤Г·ГЁГЄГ  " << i << ". Г‚Г°ГҐГ¬Гї: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
             }
 //            GetLocalTime(&st);
-//            fout << "Конец итерации. " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//            fout << "ГЉГ®Г­ГҐГ¶ ГЁГІГҐГ°Г Г¶ГЁГЁ. " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
         }
 
         void runcycle()
@@ -357,7 +368,7 @@ class hive
                 if (stagnationcount >= maxstag)
                 {
 //                    GetLocalTime(&st);
-//                    fout << "Алгоритм достиг стагнации на " << z << "-ом цикле. Фитнес значение = " << bestfit << ". Время: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//                    fout << "ГЂГ«ГЈГ®Г°ГЁГІГ¬ Г¤Г®Г±ГІГЁГЈ Г±ГІГ ГЈГ­Г Г¶ГЁГЁ Г­Г  " << z << "-Г®Г¬ Г¶ГЁГЄГ«ГҐ. Г”ГЁГІГ­ГҐГ± Г§Г­Г Г·ГҐГ­ГЁГҐ = " << bestfit << ". Г‚Г°ГҐГ¬Гї: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
                     break;
                 }
             }
@@ -365,8 +376,8 @@ class hive
             for(int a = 0; a < bestsitescount + selsitescount; a++)
             {
 //                GetLocalTime(&st);
-//                fout << "Алгоритм закончился. Фитнес значение = " << bestfit << "Фитнес значение = " << membees[a].fitness << ". Координаты: x = " << membees[a].position[0] << "; y = " << membees[a].position[1] << "  range: x = " << membees[a].range[0] << "; y = " << membees[a].range[1] << "  min: x = " << membees[a].minval[0]
-//                << "; y = " << membees[a].minval[1] << "  max: x = " << membees[a].maxval[0] << "; y = " << membees[a].maxval[1] << ". Время: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//                fout << "ГЂГ«ГЈГ®Г°ГЁГІГ¬ Г§Г ГЄГ®Г­Г·ГЁГ«Г±Гї. Г”ГЁГІГ­ГҐГ± Г§Г­Г Г·ГҐГ­ГЁГҐ = " << bestfit << "Г”ГЁГІГ­ГҐГ± Г§Г­Г Г·ГҐГ­ГЁГҐ = " << membees[a].fitness << ". ГЉГ®Г®Г°Г¤ГЁГ­Г ГІГ»: x = " << membees[a].position[0] << "; y = " << membees[a].position[1] << "  range: x = " << membees[a].range[0] << "; y = " << membees[a].range[1] << "  min: x = " << membees[a].minval[0]
+//                << "; y = " << membees[a].minval[1] << "  max: x = " << membees[a].maxval[0] << "; y = " << membees[a].maxval[1] << ". Г‚Г°ГҐГ¬Гї: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
 //                cout << "Algorithm finished. Fitness best = " << bestfit << ". Fitness = " << membees[a].fitness << ". Coordinates: x = " << membees[a].position[0] << "; y = " << membees[a].position[1] << "  range: x = " << membees[a].range[0] << "; y = " << membees[a].range[1] << "  min: x = " << membees[a].minval[0]
 //                << "; y = " << membees[a].minval[1] << "  max: x = " << membees[a].maxval[0] << "; y = " << membees[a].maxval[1] << ". Time: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
                 severaltests << z << "\t" << membees[a].fitness << "\t" << membees[a].position[0] << "\t" << membees[a].position[1] << endl;
@@ -397,10 +408,10 @@ int main()
     severaltests << scoutbeecount << "\t" << selectedbeecount << "\t" << bestbeecount << "\t" << selsitescount << "\t" << bestsitescount << "\t" << maxfunccounter << "\t" << rangeshrinker << "\t" << maxiter << "\t" << maxstag << endl << endl;
     severaltests << "Iterations\tFitness\tCoord X\tCoord Y" << endl;
 
-//    fout << "Начало алгоритма" << ". Время: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl << endl;
+//    fout << "ГЌГ Г·Г Г«Г® Г Г«ГЈГ®Г°ГЁГІГ¬Г " << ". Г‚Г°ГҐГ¬Гї: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl << endl;
     numtests(50);
 
 //    GetLocalTime(&st);
-//    fout << "Конец алгоритма" << ". Время: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
+//    fout << "ГЉГ®Г­ГҐГ¶ Г Г«ГЈГ®Г°ГЁГІГ¬Г " << ". Г‚Г°ГҐГ¬Гї: " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
     return 0;
 }
