@@ -54,15 +54,15 @@ class doublebee
 //                return fMin + f * (fMax - fMin);
                 position[i] = minval[i] + ((double)rand() / (RAND_MAX + 1.0)) * (maxval[i] - minval[i]);
 //                position[i] = (double)(rand() % (int)((maxval[i] - minval[i]) * 1000.0 + 1.0)) / 1000.0 + minval[i];
-//                fitness -= position[i] * position[i];//ìèíèìàëüíûé îáúåì ãèïåðñôåðû
+//                fitness -= position[i] * position[i];
                 i++;
             }
-//            fitness = - (pow(1.0 - position[0], 2.0) + 100 * pow(position[1] - pow(position[0], 2.0),2.0));//ðîçåíáðîê 2 ïåðåìåííûå
+//            fitness = - (pow(1.0 - position[0], 2.0) + 100 * pow(position[1] - pow(position[0], 2.0),2.0));
 //            fitness = (1 / (1 + pow(position[0] - 2.0,2.0) + pow(position[1] - 10.0, 2.0))) +
 //            (1 / (2 + pow(position[0] - 10.0,2.0) + pow(position[1] - 15.0, 2.0))) +
-//            (1 / (1 + pow(position[0] - 18.0,2.0) + pow(position[1] - 4.0, 2.0)));//øåêåëü
-//            fitness = - (pow(pow(position[0], 2.0) + position[1] - 11, 2.0) + pow(position[0] + pow(position[1], 2.0) - 7.0, 2.0));//Õèììåëüáëàó
-            fitness = - (20.0 + pow(position[0], 2.0) + pow(position[1], 2.0) - 10 * (cos(2.0 * M_PI * position[0]) + cos(2.0 * M_PI * position[1])));//Ðàñòðèãèí
+//            (1 / (1 + pow(position[0] - 18.0,2.0) + pow(position[1] - 4.0, 2.0)));
+//            fitness = - (pow(pow(position[0], 2.0) + position[1] - 11, 2.0) + pow(position[0] + pow(position[1], 2.0) - 7.0, 2.0));
+            fitness = - (20.0 + pow(position[0], 2.0) + pow(position[1], 2.0) - 10 * (cos(2.0 * M_PI * position[0]) + cos(2.0 * M_PI * position[1])));
 
         }
 
@@ -71,13 +71,10 @@ class doublebee
             fitness = 0;
             for (int i = 0; i < varnum; i++)
             {
-//                double pos = otherpos[i];
-//                double ran = range_list[i];
                 minval[i] = otherpos[i] - range_list[i];
                 if (minval[i] < minvalues[i]) minval[i] = minvalues[i];
                 maxval[i] = otherpos[i] + range_list[i];
                 if (maxval[i] > maxvalues[i]) maxval[i] = maxvalues[i];
-//                position[i] = (double)(rand() % (int)((maxval[i] - minval[i]) * 1000.0 + 1.0)) / 1000.0 + minval[i];
                 position[i] = minval[i] + ((double)rand() / (RAND_MAX + 1.0)) * (maxval[i] - minval[i]);
 
 //                fitness -= position[i] * position[i];
@@ -244,7 +241,7 @@ class hive
             }
         }
 
-        void beesatwork()//äîáàâèòü çàïèñè â ôàéë!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        void beesatwork()
         {
 //            GetLocalTime(&st);
 //            fout << "Íà÷àëàñü îñíîâíàÿ ðàáîòà àëãîðèòìà. " << st.wYear << "-" << st.wMonth << "-" << st.wDay << "  " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << "." << st.wMilliseconds << endl;
@@ -288,7 +285,7 @@ class hive
                         }
                     }
                 }
-                else//îòðÿäû îòîáðàííûõ òî÷åê
+                else
                 {
                     bool ind = false;
                     for(int j = scoutbeecount + bestsitescount * bestbeecount + (i - bestsitescount) * selectedbeecount; j < scoutbeecount + bestsitescount * bestbeecount + (i - bestsitescount + 1) * selectedbeecount; j++)
@@ -326,7 +323,7 @@ class hive
                 }
             }
 
-            double center[varnum];//ïåðåìåííûå äëÿ ðàçâåä÷èêîâ
+            double center[varnum];
             double range[varnum];
             for(int i = 0; i < varnum; i++)
             {
